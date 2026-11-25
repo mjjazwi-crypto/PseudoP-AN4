@@ -3,6 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+(function(){
+  var tg=window.Telegram&&Telegram.WebApp; if(!tg)return;
+  try{tg.ready();tg.expand();tg.disableVerticalSwipes&&tg.disableVerticalSwipes();}catch(e){}
+  var r=document.documentElement.style;
+  function sync(){r.setProperty('--app-h',(tg.viewportStableHeight||innerHeight)+'px');}
+  tg.onEvent('viewportChanged',sync);tg.onEvent('fullscreenChanged',sync);addEventListener('resize',sync);sync();
+  try{if(tg.isVersionAtLeast&&tg.isVersionAtLeast('8.0')&&!tg.isFullscreen&&tg.requestFullscreen)tg.requestFullscreen();}catch(e){}
+  tg.onEvent('fullscreenFailed',function(){try{tg.expand();}catch(e){}});
+})();
+</script>
 <meta name="theme-color" content="#0a0609" id="tc">
 <meta name="description" content="Pseudoscience × Medical Capsule — اختبار عملي تشريح: تعرّف على التراكيب المرقّمة في الصور التشريحية.">
 <title>Pseudoscience × Medical Capsule | Anatomy Practical Quiz</title>
@@ -192,6 +204,11 @@ footer{text-align:center;color:var(--mu);font-size:13px;padding:24px 0}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* Telegram fullscreen fix */
+html,body{width:100%;min-height:var(--app-h,100dvh)}
+body{padding-top:calc(max(env(safe-area-inset-top),var(--tg-safe-area-inset-top,0px)) + var(--tg-content-safe-area-inset-top,0px));padding-bottom:max(env(safe-area-inset-bottom),var(--tg-safe-area-inset-bottom,0px))}
+.nextbar{bottom:calc(16px + max(env(safe-area-inset-bottom),var(--tg-safe-area-inset-bottom,0px)))}
 </style>
 </head>
 <body>
